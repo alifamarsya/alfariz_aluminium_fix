@@ -1,10 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Sticky Header Background Blur change on Scroll
+    // 1. Navbar transparent on Hero, solid after scroll past it
     const header = document.getElementById('header');
-    const scrollThreshold = 20;
+    const heroSection = document.querySelector('.hero');
 
     const handleScroll = () => {
-        if (window.scrollY > scrollThreshold) {
+        const heroBottom = heroSection ? heroSection.offsetHeight - 30 : 80;
+        if (window.scrollY > heroBottom) {
             header.classList.add('scrolled');
         } else {
             header.classList.remove('scrolled');
