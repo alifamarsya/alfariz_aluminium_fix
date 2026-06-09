@@ -937,132 +937,205 @@ p {
     }
 }
 
-/* ==========================
-   Product Page
-========================== */
+/* ==========================================================================
+   Alfariz Aluminium — Katalog Produk CSS (style/product.css)
+   ========================================================================== */
 
-.hero-product {
-    text-align: center;
-    padding: 100px 20px 60px;
-    background: var(--bg-light);
+/* 1. Pengaturan Dasar Halaman Produk */
+.products-page {
+    background-color: #f8f9fa;
+    padding-bottom: 80px;
 }
 
-.hero-product h1 {
-    font-size: 2.5rem;
-    margin-bottom: 15px;
+section.product-category {
+    scroll-margin-top: 100px;
+    padding: 30px 0;
 }
 
-.hero-product p {
-    max-width: 700px;
+/* 2. Hero Section Katalog (Bagian Atas) */
+.page-hero {
+    background: linear-gradient(135deg, #1b365d 0%, #2a528a 100%);
+    padding: 130px 24px 60px;
+    color: #ffffff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.page-hero .page-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    margin-bottom: 16px;
+    letter-spacing: -1px;
+    color: #ffffff;
+}
+
+.page-hero .page-subtitle {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 650px;
     margin: 0 auto;
-    color: var(--text-muted);
-}
-
-/* Section Produk */
-.products {
-    padding: 80px 0;
-}
-
-.section-header {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.section-header h2 {
-    margin-bottom: 10px;
-}
-
-/* Grid */
-.products-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 30px;
-}
-
-/* Card */
-.product-card {
-    background: #fff;
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-    transition: 0.3s;
-}
-
-.product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-md);
-}
-
-/* Gambar */
-.product-card img {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-}
-
-/* Isi Card */
-.product-content {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-.product-content h3 {
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.product-content p {
     line-height: 1.6;
 }
 
-/* Harga */
-.price {
-    color: #c28a2e;
-    font-weight: 700;
-    margin: 10px 0;
+/* 3. Layout Daftar Produk */
+.catalog-list {
+    display: flex;
+    flex-direction: column;
+    margin-top: -30px;
+    /* Menarik konten sedikit ke atas menimpa hero */
 }
 
-/* Tombol */
-.btn-detail {
-    display: inline-block;
-    margin-top: 15px;
-    padding: 10px 20px;
-    border: 2px solid #0f4c81;
-    color: #0f4c81;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-    transition: 0.3s;
-}
-
-.btn-detail:hover {
-    background: #0f4c81;
-    color: white;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .products-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-.advantages {
-    padding: 80px 20px;
-    background: #f8f9fa;
-}
-
-.advantages-grid {
+/* Desain Kartu Produk Premium */
+.product-card {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 25px;
+    grid-template-columns: 1fr 1.2fr;
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
-.advantage-card {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* Area Gambar dengan Animasi Micro (Hover) */
+.product-img-wrapper {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    min-height: 320px;
+}
+
+.product-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.product-card:hover .product-img {
+    transform: scale(1.06);
+}
+
+/* Area Detail Spesifikasi Produk */
+.product-details {
+    padding: 40px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.product-details h2 {
+    font-size: 1.8rem;
+    color: #1b365d;
+    font-weight: 700;
+    margin-bottom: 12px;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+}
+
+/* 4. Pewarnaan Khusus Blueprint (Jingga Premium / Merah Bata) */
+.price-tag {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #d35400;
+    /* Merah Bata / Jingga Premium */
+    background-color: rgba(211, 84, 0, 0.08);
+    padding: 8px 16px;
+    border-radius: 8px;
+    display: inline-block;
+    margin-bottom: 24px;
+    font-family: var(--font-title, 'Outfit', sans-serif);
+}
+
+/* Daftar Spesifikasi Centang Hijau */
+.product-specs {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 32px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.product-specs li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 0.95rem;
+    color: #475569;
+    line-height: 1.5;
+}
+
+.product-specs i {
+    font-size: 1.25rem;
+    margin-top: 2px;
+}
+
+/* Tombol CTA WhatsApp Interaktif */
+.btn-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: #f0fdf4;
+    color: #15803d;
+    border: 1px solid #bbf7d0;
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    align-self: flex-start;
+}
+
+/* Efek Hover Tombol WA */
+.btn-whatsapp:hover {
+    background-color: #2ecc71;
+    /* Warna hijau segar instruksi Blueprint */
+    color: #ffffff;
+    border-color: #2ecc71;
+    box-shadow: 0 8px 20px rgba(46, 204, 113, 0.25);
+    transform: translateY(-2px);
+}
+
+.btn-whatsapp:hover i {
+    color: #ffffff !important;
+}
+
+/* 5. Responsivitas (Smartphone Layar < 768px: Tumpuk 1 Kolom Vertikal) */
+@media (max-width: 768px) {
+    .page-hero {
+        padding: 110px 20px 50px;
+    }
+
+    .page-hero .page-title {
+        font-size: 2.2rem;
+    }
+
+    .product-card {
+        grid-template-columns: 1fr;
+        /* Mengubah Grid ke 1 Kolom vertikal */
+    }
+
+    .product-img-wrapper {
+        height: 250px;
+        min-height: auto;
+    }
+
+    .product-details {
+        padding: 24px 20px;
+    }
+
+    .product-details h2 {
+        font-size: 1.5rem;
+    }
+
+    .price-tag {
+        font-size: 1rem;
+    }
 }
