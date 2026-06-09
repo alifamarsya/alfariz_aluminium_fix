@@ -67,8 +67,7 @@ body {
     line-height: 1.6;
     background-color: var(--bg-main);
     overflow-x: hidden;
-    padding-top: 80px;
-    /* Offset for fixed header */
+    /* No padding-top: hero section extends under transparent navbar */
 }
 
 /* ==========================================================================
@@ -227,17 +226,25 @@ p {
 }
 
 /* ==========================================================================
-   Header & Navbar (Clean, No Overdone Glassmorphism)
+   Header & Navbar (Transparent on Hero, Solid on Scroll - YKK AP Style)
    ========================================================================== */
 .header {
-    background: var(--bg-main);
+    background: transparent;
+    /* Start transparent over hero */
     position: fixed;
     width: 100%;
     top: 0;
     left: 0;
     z-index: 1000;
-    border-bottom: 1px solid var(--border-color);
-    transition: var(--transition-fast);
+    border-bottom: 1px solid transparent;
+    transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+/* State: scrolled down - solid white background */
+.header.scrolled {
+    background: var(--bg-main);
+    border-bottom-color: var(--border-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .navbar {
@@ -260,26 +267,52 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--primary-color);
-    color: var(--bg-main);
+    background-color: var(--bg-main);
+    /* White icon on transparent header */
     border-radius: 4px;
-    font-family: var(--font-title);
-    font-weight: 800;
-    font-size: 1.3rem;
+    overflow: hidden;
+    /* Clip image inside */
+    transition: background 0.35s ease, color 0.35s ease;
+}
+
+/* Ensure logo image fills the container */
+.logo-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.header.scrolled .logo-icon {
+    background-color: var(--bg-light);
+    color: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
 }
 
 .mainlogo h1 {
     font-size: 1.25rem;
     font-weight: 800;
     letter-spacing: -0.5px;
-    color: var(--primary-color);
+    color: var(--bg-main);
+    /* White text on transparent header */
     display: flex;
     align-items: center;
     gap: 4px;
+    transition: color 0.35s ease;
+}
+
+.header.scrolled .mainlogo h1 {
+    color: var(--primary-color);
 }
 
 .mainlogo h1 span {
     font-weight: 400;
+    color: rgba(255, 255, 255, 0.7);
+    transition: color 0.35s ease;
+}
+
+.header.scrolled .mainlogo h1 span {
     color: var(--text-muted);
 }
 
@@ -289,7 +322,8 @@ p {
 }
 
 .nav a {
-    color: var(--text-main);
+    color: rgba(255, 255, 255, 0.9);
+    /* White nav links on transparent header */
     text-decoration: none;
     font-weight: 500;
     font-size: 0.95rem;
@@ -299,8 +333,17 @@ p {
     font-family: var(--font-title);
 }
 
+.header.scrolled .nav a {
+    color: var(--text-main);
+}
+
 .nav a:hover,
 .nav a.active {
+    color: var(--bg-main);
+}
+
+.header.scrolled .nav a:hover,
+.header.scrolled .nav a.active {
     color: var(--accent-color);
 }
 
@@ -311,8 +354,12 @@ p {
     height: 2px;
     bottom: 0;
     left: 0;
-    background-color: var(--accent-color);
+    background-color: var(--bg-main);
     transition: var(--transition-fast);
+}
+
+.header.scrolled .nav a::after {
+    background-color: var(--accent-color);
 }
 
 .nav a:hover::after,
@@ -325,70 +372,124 @@ p {
     align-items: center;
 }
 
+.mobileactbtn {
+    display: none;
+}
+
+/* WhatsApp button on transparent header */
+.actbtn .btn-whatsapp {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: var(--bg-main);
+    border: 1.5px solid rgba(255, 255, 255, 0.5);
+    transition: background 0.35s ease, color 0.35s ease, border-color 0.35s ease;
+}
+
+.actbtn .btn-whatsapp:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.header.scrolled .actbtn .btn-whatsapp {
+    background-color: #25D366;
+    color: var(--bg-main);
+    border-color: transparent;
+}
+
+.header.scrolled .actbtn .btn-whatsapp:hover {
+    background-color: #128C7E;
+}
+
 .mobile-nav-toggle {
     display: none;
     background: transparent;
     border: none;
-    color: var(--primary-color);
+    color: var(--bg-main);
+    /* White icon on transparent header */
     font-size: 1.5rem;
     cursor: pointer;
+    transition: color 0.35s ease;
+}
+
+.header.scrolled .mobile-nav-toggle {
+    color: var(--primary-color);
 }
 
 /* ==========================================================================
-   Hero Section (Split Layout for Clean Human Look)
-   ========================================================================== */
+Hero Section (Full-Screen Background Banner with Dark Overlay)
+========================================================================== */
 .hero {
-    background-color: var(--bg-light);
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    height: calc(100vh - 80px);
-    min-height: 550px;
-    align-items: center;
     position: relative;
-    overflow: hidden;
-    border-bottom: 1px solid var(--border-color);
+    height: 100vh;
+    min-height: 620px;
+    display: flex;
+    align-items: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* Navbar floats transparently over this section */
 }
 
-.hero-text-side {
-    padding: 0 60px 0 8%;
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Strong dark gradient so text is clearly visible */
+    background: linear-gradient(to right,
+            rgba(10, 20, 50, 0.85) 0%,
+            rgba(10, 20, 50, 0.70) 55%,
+            rgba(10, 20, 50, 0.45) 100%);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
     z-index: 2;
+    padding: 0 24px;
+    /* Matches container padding */
 }
 
 .hero-text-box {
-    max-width: 600px;
+    max-width: 680px;
 }
 
+/* Badge on hero: light style with white text */
 .badge {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 5px 12px;
-    background-color: rgba(27, 54, 93, 0.06);
-    color: var(--primary-color);
-    border: 1px solid rgba(27, 54, 93, 0.15);
+    padding: 6px 14px;
+    background-color: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 4px;
     font-size: 0.8rem;
     font-weight: 700;
     font-family: var(--font-title);
-    margin-bottom: 20px;
-    letter-spacing: 0.5px;
+    margin-bottom: 24px;
+    letter-spacing: 1px;
     text-transform: uppercase;
 }
 
 .hero-title {
-    font-size: 3rem;
+    font-size: 3.25rem;
     font-weight: 800;
-    line-height: 1.2;
-    margin-bottom: 16px;
+    line-height: 1.15;
+    margin-bottom: 20px;
     letter-spacing: -1px;
-    color: var(--primary-dark);
+    color: #FFFFFF;
+    /* Solid white - clearly visible */
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
 }
 
 .hero-subtitle {
-    font-size: 1.05rem;
-    color: var(--text-muted);
-    margin-bottom: 30px;
-    line-height: 1.6;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.85);
+    /* Bright, readable white */
+    margin-bottom: 36px;
+    line-height: 1.65;
+    max-width: 580px;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
 }
 
 .hero-actions {
@@ -397,24 +498,9 @@ p {
     flex-wrap: wrap;
 }
 
-.hero-img-side {
-    position: relative;
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-}
-
-.hero-img-side img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-}
-
 /* ==========================================================================
-   Tentang Kami Section (About Us)
-   ========================================================================== */
+Tentang Kami Section (About Us)
+========================================================================== */
 .about-layout {
     display: grid;
     grid-template-columns: 1.1fr 0.9fr;
@@ -484,8 +570,8 @@ p {
 }
 
 /* ==========================================================================
-   Layanan & Produk Section (Services)
-   ========================================================================== */
+Layanan & Produk Section (Services)
+========================================================================== */
 .grid-4 {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -584,7 +670,7 @@ p {
 }
 
 /* ==========================================================================
-   Mengapa Memilih Kami (Why Choose Us)
+Mengapa Memilih Kami (Why Choose Us)
    ========================================================================== */
 .why-grid {
     display: grid;
@@ -698,8 +784,8 @@ p {
 }
 
 /* ==========================================================================
-   Footer & Contact Info (YKK-AP Clean Lines & Grids)
-   ========================================================================== */
+Footer & Contact Info (YKK-AP Clean Lines & Grids)
+========================================================================== */
 .footer {
     background-color: var(--bg-light);
     color: var(--text-main);
@@ -720,16 +806,21 @@ p {
 }
 
 .footer-logo-icon {
-    width: 30px;
-    height: 30px;
+    width: 34px;
+    height: 34px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--primary-color);
-    color: var(--bg-main);
+    background-color: var(--bg-light);
+    border: 1px solid var(--border-color);
     border-radius: 4px;
-    font-family: var(--font-title);
-    font-weight: 800;
+}
+
+.footer-logo-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
 }
 
 .footer-logo h2 {
@@ -822,18 +913,7 @@ p {
    ========================================================================== */
 @media (max-width: 1024px) {
     .hero {
-        grid-template-columns: 1fr;
-        height: auto;
-        padding: 60px 0;
-    }
-
-    .hero-text-side {
-        padding: 0 40px;
-        margin-bottom: 40px;
-    }
-
-    .hero-img-side {
-        height: 380px;
+        height: 85vh;
     }
 
     .hero-title {
@@ -860,10 +940,6 @@ p {
 }
 
 @media (max-width: 768px) {
-    body {
-        padding-top: 70px;
-    }
-
     .navbar {
         height: 70px;
     }
@@ -884,6 +960,14 @@ p {
 
     .nav.active {
         display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px;
+    }
+
+    .nav.active a {
+        color: var(--text-main);
+        /* Dark text when mobile menu is open */
     }
 
     .nav a {
@@ -901,11 +985,41 @@ p {
 
     .actbtn {
         display: none;
-        /* Hide header CTA on mobile header */
+    }
+
+    .mobileactbtn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 16px;
+    }
+
+    .hero {
+        height: 100dvh;
+        min-height: 550px;
+    }
+
+    .hero-overlay {
+        background: linear-gradient(to bottom,
+                rgba(10, 20, 50, 0.80) 0%,
+                rgba(10, 20, 50, 0.75) 100%);
+    }
+
+    .hero-text-box {
+        text-align: left;
     }
 
     .hero-title {
-        font-size: 2rem;
+        font-size: 2.1rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+        align-items: flex-start;
     }
 
     .grid-4,
