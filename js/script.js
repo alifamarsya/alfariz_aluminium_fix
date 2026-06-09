@@ -1,0 +1,98 @@
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Sticky Header Background Blur change on Scroll
+    const header = document.getElementById('header');
+    const scrollThreshold = 20;
+
+    const handleScroll = () => {
+        if (window.scrollY > scrollThreshold) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check on load
+
+    // 2. Mobile Navigation Toggle
+    const navToggle = document.getElementById('nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+
+    if (navToggle && navMenu) {
+        navToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navMenu.classList.toggle('active');
+
+            // Toggle icon list/close
+            const icon = navToggle.querySelector('i');
+            if (navMenu.classList.contains('active')) {
+                icon.className = 'ph ph-x';
+            } else {
+                icon.className = 'ph ph-list';
+            }
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navMenu.contains(e.target) && !navToggle.contains(e.target)) {
+                navMenu.classList.remove('active');
+                const icon = navToggle.querySelector('i');
+                if (icon) icon.className = 'ph ph-list';
+            }
+        });
+
+        // Close menu when clicking link
+        navMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                const icon = navToggle.querySelector('i');
+                if (icon) icon.className = 'ph ph-list';
+            });
+        });
+    }
+
+    // 3. Smooth scroll adjusting for header height
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+            if (href === '#') return;
+
+            const targetElement = document.querySelector(href);
+            if (targetElement) {
+                e.preventDefault();
+                const headerHeight = header.offsetHeight;
+                const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                const offsetPosition = elementPosition - headerHeight;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // 4. Subtle Premium Scroll Reveal Animations
+    const revealElements = document.querySelectorAll('.service-card, .why-item, .portfolio-card, .about-content, .about-img-box, .testimonial-container');
+
+    const revealOnScroll = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    revealElements.forEach(el => {
+        // Initial animation state
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+        revealOnScroll.observe(el);
+    });
+});
