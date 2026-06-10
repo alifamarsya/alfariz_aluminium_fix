@@ -3,7 +3,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const header = document.getElementById("header");
   const heroSection = document.querySelector(".hero");
   const logo = document.querySelector(".logo-icon");
+document.addEventListener("DOMContentLoaded", () => {
+  // 1. Navbar transparent on Hero, solid after scroll past it
+  const header = document.getElementById("header");
+  const heroSection = document.querySelector(".hero");
+  const logo = document.querySelector(".logo-icon");
 
+  const handleScroll = () => {
+    const heroBottom = heroSection ? heroSection.offsetHeight - 30 : 80;
+    if (window.scrollY > heroBottom) {
+      header.classList.add("scrolled");
+      logo.style.filter = "none";
+    } else {
+      header.classList.remove("scrolled");
+      logo.style.filter = "brightness(0) invert(1)";
+    }
+  };
   const handleScroll = () => {
     const heroBottom = heroSection ? heroSection.offsetHeight - 30 : 80;
     if (window.scrollY > heroBottom) {
@@ -21,6 +36,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const navToggle = document.getElementById("nav-toggle");
   const navMenu = document.getElementById("nav-menu");
 
+  if (navToggle && navMenu) {
+    navToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      navMenu.classList.toggle("active");
   if (navToggle && navMenu) {
     navToggle.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -56,7 +75,19 @@ document.addEventListener("DOMContentLoaded", () => {
     anchor.addEventListener("click", function (e) {
       const href = this.getAttribute("href");
       if (href === "#") return;
+  // 3. Smooth scroll adjusting for header height
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener("click", function (e) {
+      const href = this.getAttribute("href");
+      if (href === "#") return;
 
+      const targetElement = document.querySelector(href);
+      if (targetElement) {
+        e.preventDefault();
+        const headerHeight = header.offsetHeight;
+        const elementPosition =
+          targetElement.getBoundingClientRect().top + window.pageYOffset;
+        const offsetPosition = elementPosition - headerHeight;
       const targetElement = document.querySelector(href);
       if (targetElement) {
         e.preventDefault();
@@ -72,7 +103,18 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth",
+        });
+      }
+    });
+  });
 
+  // 4. Subtle Premium Scroll Reveal Animations
+  const revealElements = document.querySelectorAll(
+    ".service-card, .why-item, .portfolio-card, .about-content, .about-img-box, .testimonial-container",
+  );
   // 4. Subtle Premium Scroll Reveal Animations
   const revealElements = document.querySelectorAll(
     ".service-card, .why-item, .portfolio-card, .about-content, .about-img-box, .testimonial-container",
@@ -93,7 +135,30 @@ document.addEventListener("DOMContentLoaded", () => {
       rootMargin: "0px 0px -50px 0px",
     },
   );
+  const revealOnScroll = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = "1";
+          entry.target.style.transform = "translateY(0)";
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.1,
+      rootMargin: "0px 0px -50px 0px",
+    },
+  );
 
+  revealElements.forEach((el) => {
+    // Initial animation state
+    el.style.opacity = "0";
+    el.style.transform = "translateY(20px)";
+    el.style.transition =
+      "opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
+    revealOnScroll.observe(el);
+  });
   revealElements.forEach((el) => {
     // Initial animation state
     el.style.opacity = "0";
