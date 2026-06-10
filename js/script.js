@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // 1. Navbar transparent on Hero, solid after scroll past it
   const header = document.getElementById("header");
   const heroSection = document.querySelector(".hero");
   const logo = document.querySelector(".logo-icon");
@@ -16,9 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   window.addEventListener("scroll", handleScroll);
-  handleScroll(); // Initial check on load
+  handleScroll();
 
-  // 2. Mobile Navigation Toggle
   const navToggle = document.getElementById("nav-toggle");
   const navMenu = document.getElementById("nav-menu");
 
@@ -27,7 +25,6 @@ document.addEventListener("DOMContentLoaded", () => {
       e.stopPropagation();
       navMenu.classList.toggle("active");
 
-      // Toggle icon list/close
       const icon = navToggle.querySelector("i");
       if (navMenu.classList.contains("active")) {
         icon.className = "ph ph-x";
@@ -36,7 +33,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Close menu when clicking outside
     document.addEventListener("click", (e) => {
       if (!navMenu.contains(e.target) && !navToggle.contains(e.target)) {
         navMenu.classList.remove("active");
@@ -45,7 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Close menu when clicking link
     navMenu.querySelectorAll("a").forEach((link) => {
       link.addEventListener("click", () => {
         navMenu.classList.remove("active");
@@ -55,7 +50,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 3. Smooth scroll adjusting for header height
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener("click", function (e) {
       const href = this.getAttribute("href");
@@ -77,7 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // 4. Subtle Premium Scroll Reveal Animations
   const revealElements = document.querySelectorAll(
     ".service-card, .why-item, .portfolio-card, .about-content, .about-img-box, .testimonial-container",
   );
@@ -99,7 +92,6 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   revealElements.forEach((el) => {
-    // Initial animation state
     el.style.opacity = "0";
     el.style.transform = "translateY(20px)";
     el.style.transition =
